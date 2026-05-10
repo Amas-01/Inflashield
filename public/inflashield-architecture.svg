@@ -1,0 +1,209 @@
+<svg width="1600" height="980" viewBox="0 0 1600 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="980" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1020"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+
+    <linearGradient id="card" x1="0" y1="0" x2="500" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#151C2E"/>
+      <stop offset="1" stop-color="#1B2438"/>
+    </linearGradient>
+
+    <linearGradient id="accent" x1="0" y1="0" x2="300" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00D2FF"/>
+      <stop offset="1" stop-color="#3A7BFF"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#6EA8FF"/>
+    </marker>
+
+    <style>
+      .title {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+        fill: #FFFFFF;
+      }
+
+      .subtitle {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 18px;
+        fill: #9CA3AF;
+      }
+
+      .section {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        fill: #FFFFFF;
+      }
+
+      .label {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        fill: #FFFFFF;
+      }
+
+      .text {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 15px;
+        fill: #C7D2FE;
+      }
+
+      .small {
+        font-family: Inter, Segoe UI, sans-serif;
+        font-size: 13px;
+        fill: #94A3B8;
+      }
+
+      .card {
+        fill: url(#card);
+        stroke: #25324D;
+        stroke-width: 2;
+        rx: 24;
+      }
+
+      .accent {
+        fill: url(#accent);
+      }
+
+      .line {
+        stroke: #6EA8FF;
+        stroke-width: 3;
+        marker-end: url(#arrow);
+      }
+
+      .dashed {
+        stroke-dasharray: 10 8;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="980" fill="url(#bg)"/>
+
+  <!-- Header -->
+  <text x="70" y="80" class="title">InflaShield — Architecture Overview</text>
+  <text x="70" y="118" class="subtitle">
+    Signal-to-execution inflation hedging pipeline powered by SoSoValue SSI indices and SoDEX execution
+  </text>
+
+  <!-- Browser Layer -->
+  <rect x="70" y="170" width="1460" height="180" rx="28" fill="#111827" stroke="#263247" stroke-width="2"/>
+
+  <text x="100" y="215" class="section">Client Layer — Next.js Frontend</text>
+
+  <!-- HedgeForm -->
+  <rect class="card" x="110" y="250" width="300" height="70" filter="url(#shadow)"/>
+  <rect class="accent" x="110" y="250" width="8" height="70" rx="8"/>
+  <text x="135" y="290" class="label">HedgeForm</text>
+  <text x="135" y="312" class="small">Currency • Amount • Risk Profile</text>
+
+  <!-- SignalCard -->
+  <rect class="card" x="510" y="250" width="300" height="70" filter="url(#shadow)"/>
+  <rect class="accent" x="510" y="250" width="8" height="70" rx="8"/>
+  <text x="535" y="290" class="label">SignalCard</text>
+  <text x="535" y="312" class="small">Ranked hedge recommendation</text>
+
+  <!-- IndexTable -->
+  <rect class="card" x="910" y="250" width="300" height="70" filter="url(#shadow)"/>
+  <rect class="accent" x="910" y="250" width="8" height="70" rx="8"/>
+  <text x="935" y="290" class="label">IndexTable</text>
+  <text x="935" y="312" class="small">SSI score and allocation breakdown</text>
+
+  <!-- ExecutionPanel -->
+  <rect class="card" x="1230" y="250" width="250" height="70" filter="url(#shadow)"/>
+  <rect class="accent" x="1230" y="250" width="8" height="70" rx="8"/>
+  <text x="1255" y="290" class="label">ExecutionPanel</text>
+  <text x="1255" y="312" class="small">Submit SoDEX order</text>
+
+  <!-- Internal Flow -->
+  <line x1="410" y1="285" x2="510" y2="285" class="line"/>
+  <line x1="810" y1="285" x2="910" y2="285" class="line"/>
+  <line x1="1210" y1="285" x2="1230" y2="285" class="line"/>
+
+  <!-- API Layer -->
+  <text x="100" y="430" class="section">API Layer — Secure Server Routes</text>
+
+  <rect class="card" x="180" y="470" width="420" height="140" filter="url(#shadow)"/>
+  <rect class="accent" x="180" y="470" width="10" height="140" rx="8"/>
+  <text x="215" y="515" class="label">POST /api/hedge</text>
+
+  <text x="215" y="555" class="text">• Runs hedge scoring engine</text>
+  <text x="215" y="582" class="text">• Fetches FX and SSI index data</text>
+  <text x="215" y="609" class="text">• Returns ranked hedge signal</text>
+
+  <rect class="card" x="650" y="470" width="420" height="140" filter="url(#shadow)"/>
+  <rect class="accent" x="650" y="470" width="10" height="140" rx="8"/>
+  <text x="685" y="515" class="label">POST /api/execute</text>
+
+  <text x="685" y="555" class="text">• Builds SoDEX order payload</text>
+  <text x="685" y="582" class="text">• Submits allocation to testnet</text>
+  <text x="685" y="609" class="text">• Returns execution confirmation</text>
+
+  <rect class="card" x="1120" y="470" width="300" height="140" filter="url(#shadow)"/>
+  <rect class="accent" x="1120" y="470" width="10" height="140" rx="8"/>
+  <text x="1155" y="515" class="label">GET /api/rates</text>
+
+  <text x="1155" y="555" class="text">• ExchangeRate proxy</text>
+  <text x="1155" y="582" class="text">• Safe client-side access</text>
+
+  <!-- Engine Layer -->
+  <text x="100" y="710" class="section">Core Engine — Deterministic Hedge Scoring</text>
+
+  <rect class="card" x="120" y="750" width="1360" height="160" filter="url(#shadow)"/>
+
+  <text x="160" y="805" class="label">Scoring Formula</text>
+
+  <text x="160" y="845" class="text">
+    score = (inflationCorrelation × 0.45) + (riskAdjustedReturn × 0.35) + (liquidityScore × 0.20)
+  </text>
+
+  <text x="160" y="885" class="small">
+    Inflation Correlation • Risk-Adjusted Return • Liquidity Normalisation • Risk-Based Allocation
+  </text>
+
+  <!-- External APIs -->
+  <text x="1220" y="430" class="section">External Services</text>
+
+  <rect class="card" x="1220" y="160" width="260" height="70" filter="url(#shadow)"/>
+  <text x="1250" y="200" class="label">SoSoValue SSI API</text>
+
+  <rect class="card" x="1220" y="250" width="260" height="70" filter="url(#shadow)"/>
+  <text x="1250" y="290" class="label">ExchangeRate-API</text>
+
+  <rect class="card" x="1220" y="340" width="260" height="70" filter="url(#shadow)"/>
+  <text x="1250" y="380" class="label">SoDEX Testnet</text>
+
+  <!-- AI Optional -->
+  <rect class="card" x="1240" y="760" width="220" height="110" filter="url(#shadow)"/>
+  <rect class="accent" x="1240" y="760" width="10" height="110" rx="8"/>
+  <text x="1270" y="805" class="label">Optional AI Layer</text>
+  <text x="1270" y="838" class="small">Groq • Gemini • Claude • Ollama</text>
+
+  <!-- Connections -->
+  <line x1="390" y1="350" x2="390" y2="470" class="line"/>
+  <line x1="760" y1="350" x2="760" y2="470" class="line"/>
+  <line x1="1260" y1="350" x2="1260" y2="470" class="line"/>
+
+  <line x1="390" y1="610" x2="390" y2="750" class="line"/>
+  <line x1="860" y1="610" x2="860" y2="750" class="line"/>
+
+  <line x1="1120" y1="540" x2="1220" y2="285" class="line dashed"/>
+  <line x1="1070" y1="540" x2="1220" y2="195" class="line dashed"/>
+  <line x1="860" y1="540" x2="1220" y2="375" class="line dashed"/>
+
+  <line x1="1240" y1="815" x2="1040" y2="815" class="line dashed"/>
+
+  <!-- Footer -->
+  <text x="70" y="950" class="small">
+    Phase 1 MVP • Stateless Architecture • Server-Side API Security • Deterministic Hedge Engine • Optional AI Enhancement
+  </text>
+</svg>

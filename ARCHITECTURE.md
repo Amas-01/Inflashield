@@ -8,6 +8,12 @@ This document describes the technical design of InflaShield — decisions made, 
 
 InflaShield is a **signal-to-execution pipeline**. It is stateless by design for the Phase 1 MVP: no database, no user accounts, no persistent sessions. Every request is self-contained.
 
+### Architecture Diagram
+
+![InflaShield Architecture Overview](../public/inflashield-architecture.svg)
+
+### Text Flow (Legacy)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        Browser / Client                      │

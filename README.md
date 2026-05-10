@@ -62,6 +62,12 @@ The entire flow — from problem to protection — in under 60 seconds.
 
 ## How It Works
 
+### System Architecture
+
+![InflaShield Architecture Overview](./public/inflashield-architecture.svg)
+
+### Flow Breakdown
+
 ```
 User Input
   └── Local currency + savings amount + risk level

@@ -1,6 +1,12 @@
-# InflaShield
+<p align="center">
+  <img src="./public/inflashield-logo.svg" alt="InflaShield" width="100%">
+</p>
 
-> **On-chain inflation hedge agent — protect your purchasing power, anywhere in the world.**
+<h1 align="center">InflaShield</h1>
+
+<p align="center">
+  <strong>On-chain inflation hedge agent — protect your purchasing power, anywhere in the world.</strong>
+</p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Built on SoSoValue](https://img.shields.io/badge/Built%20on-SoSoValue-green)](https://sosovalue.com)
@@ -217,7 +223,7 @@ Currency support is data-driven — adding a new currency requires no code chang
 
 | Name | Role | Contact |
 |---|---|---|
-| Your Name | Lead developer | your@email.com |
+| Amas-01 | Lead developer | Stealthdev301@email.com |
 
 ---
 

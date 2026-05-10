@@ -10,7 +10,7 @@ InflaShield is a **signal-to-execution pipeline**. It is stateless by design for
 
 ### Architecture Diagram
 
-![InflaShield Architecture Overview](../public/inflashield-architecture.svg)
+![InflaShield Architecture Overview](./public/inflashield-architecture.svg)
 
 ### Text Flow (Legacy)
 

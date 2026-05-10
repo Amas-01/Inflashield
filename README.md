@@ -1,16 +1,16 @@
 <p align="center">
-  <img src="./public/inflashield-logo.svg" alt="InflaShield" width="100%">
+  <img src="./public/inflashield-logo.svg" alt="InflaShield" width="50%">
 </p>
 
 <h1 align="center">InflaShield</h1>
 
 <p align="center">
   <strong>On-chain inflation hedge agent — protect your purchasing power, anywhere in the world.</strong>
+  <br/><br/>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"/></a>
+  <a href="https://sosovalue.com"><img src="https://img.shields.io/badge/Built%20on-SoSoValue-green" alt="Built on SoSoValue"/></a>
+  <a href="https://sodex.com"><img src="https://img.shields.io/badge/SoDEX-Testnet-orange" alt="SoDEX Testnet"/></a>
 </p>
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Built on SoSoValue](https://img.shields.io/badge/Built%20on-SoSoValue-green)](https://sosovalue.com)
-[![SoDEX Testnet](https://img.shields.io/badge/SoDEX-Testnet-orange)](https://sodex.com)
 
 ---
 

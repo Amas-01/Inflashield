@@ -180,6 +180,8 @@ export type AppErrorCode =
   | 'EXECUTION_FAILED'
   | 'AI_UNAVAILABLE'
   | 'INVALID_CURRENCY'
+  | 'INVALID_AMOUNT'
+  | 'INVALID_RISK_LEVEL'
   | 'CONFIG_MISSING'
 
 export interface AppError {

@@ -71,7 +71,7 @@ export const hedgeSignals = appSchema.table(
     signalJson: jsonb('signal_json').notNull(), // Full HedgeSignal stored as JSON
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
-  (table) => ({
+  (table: any) => ({
     userCreatedIdx: index('hedge_signals_user_created_idx').on(
       table.userId,
       table.createdAt
@@ -169,7 +169,7 @@ export type WalletInsert = typeof wallets.$inferInsert
 // Relations (for Drizzle query building)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many }: any) => ({
   sessions: many(sessions),
   signals: many(hedgeSignals),
   orders: many(orders),
@@ -177,23 +177,23 @@ export const usersRelations = relations(users, ({ many }) => ({
   notificationPreferences: many(notificationPreferences),
 }))
 
-export const sessionsRelations = relations(sessions, ({ one }) => ({
+export const sessionsRelations = relations(sessions, ({ one }: any) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }))
 
-export const hedgeSignalsRelations = relations(hedgeSignals, ({ one, many }) => ({
+export const hedgeSignalsRelations = relations(hedgeSignals, ({ one, many }: any) => ({
   user: one(users, { fields: [hedgeSignals.userId], references: [users.id] }),
   orders: many(orders),
 }))
 
-export const ordersRelations = relations(orders, ({ one }) => ({
+export const ordersRelations = relations(orders, ({ one }: any) => ({
   user: one(users, { fields: [orders.userId], references: [users.id] }),
   signal: one(hedgeSignals, { fields: [orders.signalId], references: [hedgeSignals.id] }),
 }))
 
 export const notificationPreferencesRelations = relations(
   notificationPreferences,
-  ({ one }) => ({
+  ({ one }: any) => ({
     user: one(users, {
       fields: [notificationPreferences.userId],
       references: [users.id],
@@ -201,6 +201,6 @@ export const notificationPreferencesRelations = relations(
   })
 )
 
-export const walletsRelations = relations(wallets, ({ one }) => ({
+export const walletsRelations = relations(wallets, ({ one }: any) => ({
   user: one(users, { fields: [wallets.userId], references: [users.id] }),
 }))

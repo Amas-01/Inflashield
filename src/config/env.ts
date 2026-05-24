@@ -46,6 +46,13 @@ const EnvSchema = z.object({
   // A separate connection string for audit log writes (restricted role with INSERT-only)
   // This role must NOT have UPDATE or DELETE permissions on the audit schema
   DATABASE_AUDIT_URL: z.string().url().optional(),
+
+  // Phase 2.4: Telegram notifications (optional)
+  TELEGRAM_BOT_TOKEN: z.string().optional(),
+
+  // Phase 2.5: Alchemy API key for RPC providers (optional, uses demo endpoints if not set)
+  NEXT_PUBLIC_ALCHEMY_KEY: z.string().optional(),
+  NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
 })
 
 type Env = z.infer<typeof EnvSchema>
@@ -98,3 +105,10 @@ env = loadEnv()
  *   const apiKey = env.SOSOVALUE_API_KEY  // ✅ TypeScript ensures this exists
  */
 export { env }
+
+/**
+ * Get env as function (for dynamic loading scenarios)
+ */
+export function getEnv(): Env {
+  return env
+}

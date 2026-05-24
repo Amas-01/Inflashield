@@ -121,7 +121,7 @@ export function useConnectWallet() {
   }, [])
 
   // Check if current connected wallet is already registered
-  const isCurrent WalletConnected = useCallback(() => {
+  const isCurrentWalletConnected = useCallback(() => {
     if (!address || !chainId) return false
     return wallets.some(
       (w) => w.address.toLowerCase() === address.toLowerCase() && w.chainId === chainId
@@ -143,6 +143,6 @@ export function useConnectWallet() {
     fetchWallets,
     connectWallet,
     disconnectWallet,
-    isCurrentWalletConnected: isCurrent WalletConnected(),
+    isCurrentWalletConnected: isCurrentWalletConnected(),
   }
 }

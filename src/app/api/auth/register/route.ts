@@ -11,6 +11,7 @@ import { z } from 'zod'
 import bcryptjs from 'bcryptjs'
 import { UserRepository } from '@/db/repositories/UserRepository'
 import { writeAudit } from '@/lib/audit/logger'
+import { getClientIp, getUserAgent } from '@/lib/audit/helpers'
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email format'),
@@ -26,14 +27,15 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
-        userId: 'system',
-        sessionId: null,
+        session_id: 'system',
+        ip_address: getClientIp(request),
+        user_agent: getUserAgent(request),
         action: 'auth.register_invalid',
-        resourceType: 'user',
+        resource_type: 'user',
+        resource_id: null,
         outcome: 'failure',
         metadata: {
           error: validated.error.message,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',
         },
       })
 
@@ -59,14 +61,15 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       await writeAudit({
-        userId: 'system',
-        sessionId: null,
+        session_id: 'system',
+        ip_address: getClientIp(request),
+        user_agent: getUserAgent(request),
         action: 'auth.register_duplicate',
-        resourceType: 'user',
+        resource_type: 'user',
+        resource_id: null,
         outcome: 'failure',
         metadata: {
           email,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',
         },
       })
 
@@ -93,15 +96,15 @@ export async function POST(request: NextRequest) {
 
     // Audit log success
     await writeAudit({
-      userId: newUser.id,
-      sessionId: null,
+      session_id: newUser.id,
+      ip_address: getClientIp(request),
+      user_agent: getUserAgent(request),
       action: 'auth.register_success',
-      resourceType: 'user',
-      resourceId: newUser.id,
+      resource_type: 'user',
+      resource_id: newUser.id,
       outcome: 'success',
       metadata: {
         email,
-        ip: request.headers.get('x-forwarded-for') || 'unknown',
       },
     })
 
@@ -120,10 +123,12 @@ export async function POST(request: NextRequest) {
     console.error('Registration error:', error)
 
     await writeAudit({
-      userId: 'system',
-      sessionId: null,
+      session_id: 'system',
+      ip_address: getClientIp(request),
+      user_agent: getUserAgent(request),
       action: 'auth.register_error',
-      resourceType: 'user',
+      resource_type: 'user',
+      resource_id: null,
       outcome: 'failure',
       metadata: {
         error: error instanceof Error ? error.message : 'Unknown error',

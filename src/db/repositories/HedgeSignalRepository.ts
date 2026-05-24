@@ -97,7 +97,7 @@ export class HedgeSignalRepository {
       .orderBy(desc(hedgeSignals.createdAt))
       .limit(safeLimit)
 
-    return result.map((r) => this.dbToDomain(r))
+    return result.map((r: DBHedgeSignal) => this.dbToDomain(r))
   }
 
   /**

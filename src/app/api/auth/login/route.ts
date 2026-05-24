@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { signIn } from '@/auth'
 import { writeAudit } from '@/lib/audit/logger'
+import { getClientIp, getUserAgent } from '@/lib/audit/helpers'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -23,14 +24,15 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
-        userId: 'system',
-        sessionId: null,
+        session_id: 'system',
+        ip_address: getClientIp(request),
+        user_agent: getUserAgent(request),
         action: 'auth.login_invalid',
-        resourceType: 'session',
+        resource_type: 'session',
+        resource_id: null,
         outcome: 'failure',
         metadata: {
           error: validated.error.message,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',
         },
       })
 
@@ -52,15 +54,16 @@ export async function POST(request: NextRequest) {
 
       if (result?.error) {
         await writeAudit({
-          userId: 'system',
-          sessionId: null,
+          session_id: 'system',
+          ip_address: getClientIp(request),
+          user_agent: getUserAgent(request),
           action: 'auth.login_failure',
-          resourceType: 'session',
+          resource_type: 'session',
+          resource_id: null,
           outcome: 'failure',
           metadata: {
             email,
             error: result.error,
-            ip: request.headers.get('x-forwarded-for') || 'unknown',
           },
         })
 
@@ -72,14 +75,15 @@ export async function POST(request: NextRequest) {
 
       // signIn succeeded - redirect will be set via NextAuth session
       await writeAudit({
-        userId: 'system', // Will be overridden by session userId after auth
-        sessionId: null,
+        session_id: 'system',
+        ip_address: getClientIp(request),
+        user_agent: getUserAgent(request),
         action: 'auth.login_success',
-        resourceType: 'session',
+        resource_type: 'session',
+        resource_id: null,
         outcome: 'success',
         metadata: {
           email,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',
         },
       })
 
@@ -102,10 +106,12 @@ export async function POST(request: NextRequest) {
     console.error('Login error:', error)
 
     await writeAudit({
-      userId: 'system',
-      sessionId: null,
+      session_id: 'system',
+      ip_address: getClientIp(request),
+      user_agent: getUserAgent(request),
       action: 'auth.login_error',
-      resourceType: 'session',
+      resource_type: 'session',
+      resource_id: null,
       outcome: 'failure',
       metadata: {
         error: error instanceof Error ? error.message : 'Unknown error',

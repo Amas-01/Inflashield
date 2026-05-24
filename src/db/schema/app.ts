@@ -71,7 +71,7 @@ export const hedgeSignals = appSchema.table(
     signalJson: jsonb('signal_json').notNull(), // Full HedgeSignal stored as JSON
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
-  (table: any) => ({
+  (table: any): any => ({
     userCreatedIdx: index('hedge_signals_user_created_idx').on(
       table.userId,
       table.createdAt
@@ -104,7 +104,7 @@ export const orders = appSchema.table(
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
-  (table) => ({
+  (table: any): any => ({
     userCreatedIdx: index('orders_user_created_idx').on(
       table.userId,
       table.createdAt
@@ -153,7 +153,7 @@ export const wallets = appSchema.table(
     label: varchar('label', { length: 100 }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
-  (table) => ({
+  (table: any): any => ({
     userAddressChainIdx: index('wallets_user_address_chain_idx').on(
       table.userId,
       table.address,
@@ -169,7 +169,7 @@ export type WalletInsert = typeof wallets.$inferInsert
 // Relations (for Drizzle query building)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const usersRelations = relations(users, ({ many }: any) => ({
+export const usersRelations = relations(users, ({ many }: any): any => ({
   sessions: many(sessions),
   signals: many(hedgeSignals),
   orders: many(orders),
@@ -177,23 +177,23 @@ export const usersRelations = relations(users, ({ many }: any) => ({
   notificationPreferences: many(notificationPreferences),
 }))
 
-export const sessionsRelations = relations(sessions, ({ one }: any) => ({
+export const sessionsRelations = relations(sessions, ({ one }: any): any => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }))
 
-export const hedgeSignalsRelations = relations(hedgeSignals, ({ one, many }: any) => ({
+export const hedgeSignalsRelations = relations(hedgeSignals, ({ one, many }: any): any => ({
   user: one(users, { fields: [hedgeSignals.userId], references: [users.id] }),
   orders: many(orders),
 }))
 
-export const ordersRelations = relations(orders, ({ one }: any) => ({
+export const ordersRelations = relations(orders, ({ one }: any): any => ({
   user: one(users, { fields: [orders.userId], references: [users.id] }),
   signal: one(hedgeSignals, { fields: [orders.signalId], references: [hedgeSignals.id] }),
 }))
 
 export const notificationPreferencesRelations = relations(
   notificationPreferences,
-  ({ one }: any) => ({
+  ({ one }: any): any => ({
     user: one(users, {
       fields: [notificationPreferences.userId],
       references: [users.id],
@@ -201,6 +201,6 @@ export const notificationPreferencesRelations = relations(
   })
 )
 
-export const walletsRelations = relations(wallets, ({ one }: any) => ({
+export const walletsRelations = relations(wallets, ({ one }: any): any => ({
   user: one(users, { fields: [wallets.userId], references: [users.id] }),
 }))

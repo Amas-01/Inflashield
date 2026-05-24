@@ -40,6 +40,12 @@ const EnvSchema = z.object({
 
   // Node environment (for framework checks)
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+
+  // Phase 2: Database configuration (optional in Phase 1, required in Phase 2)
+  DATABASE_URL: z.string().url().optional(), // PostgreSQL connection string
+  // A separate connection string for audit log writes (restricted role with INSERT-only)
+  // This role must NOT have UPDATE or DELETE permissions on the audit schema
+  DATABASE_AUDIT_URL: z.string().url().optional(),
 })
 
 type Env = z.infer<typeof EnvSchema>

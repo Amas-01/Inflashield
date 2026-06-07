@@ -114,35 +114,48 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full technical breakdown.
 
 ## Quick Start
 
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-- A SoSoValue API key ([register here](https://sosovalue.com) → API Documentation)
-- SoDEX Testnet access ([register here](https://sodex.com))
-
-### 1. Clone and install
+### Local Development (5 Minutes)
 
 ```bash
+# 1. Install PostgreSQL (if not already installed)
+sudo apt install postgresql postgresql-contrib  # Ubuntu/Debian
+brew install postgresql@14                      # macOS
+
+# 2. Set PostgreSQL password
+sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+
+# 3. Clone and install
 git clone https://github.com/YOUR_USERNAME/inflashield.git
 cd inflashield
 npm install
+
+# 4. Configure API keys in .env file (see Prerequisites below)
+# The database is already configured for local PostgreSQL
+
+# 5. Start development (auto-creates database and tables)
+npm run dev
 ```
 
-### 2. Configure environment
+Visit **http://localhost:3000**
 
-```bash
-cp .env.example .env.local
-```
+**✨ Database setup is automatic!** No manual configuration needed.
 
-Fill in your keys (see [docs/SETUP.md](docs/SETUP.md) for a step-by-step guide to getting each one):
+📖 See [LOCAL_SETUP.md](LOCAL_SETUP.md) for detailed local development guide.
 
-```env
-SOSOVALUE_API_KEY=your_key_here
-SODEX_API_KEY=your_key_here
-# Optional — enables AI-enhanced reasoning
-AI_API_KEY=your_key_here
-AI_PROVIDER=groq   # groq | anthropic | gemini
+### Production Deployment to Vercel (5 Minutes)
+
+📖 See [docs/QUICK_DEPLOY.md](docs/QUICK_DEPLOY.md) - Uses Vercel Postgres (managed database, zero configuration)
+
+### Prerequisites
+
+- **Node.js 18+**
+- **PostgreSQL 14+** (for local development)
+- **SoSoValue API key** - [Register here](https://sosovalue.com)
+- **SoDEX API key** - [Register here](https://sodex.com)
+- **ExchangeRate API key** - [Register here](https://exchangerate-api.com) (free tier)
+
+Optional for AI features:
+- **Groq API key** - [Register here](https://console.groq.com) (free, recommended)
 ```
 
 ### 3. Run locally

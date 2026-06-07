@@ -12,6 +12,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 import { env } from '@/config/env'
+import * as schema from './schema'
 
 // Main application pool
 let dbPool: Pool | null = null
@@ -70,14 +71,14 @@ let _auditDb: ReturnType<typeof drizzle> | null = null
 
 export function getDb() {
   if (!_db) {
-    _db = drizzle(getDbPool())
+    _db = drizzle(getDbPool(), { schema })
   }
   return _db
 }
 
 export function getAuditDb() {
   if (!_auditDb) {
-    _auditDb = drizzle(getAuditDbPool())
+    _auditDb = drizzle(getAuditDbPool(), { schema })
   }
   return _auditDb
 }

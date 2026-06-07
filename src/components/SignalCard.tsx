@@ -1,17 +1,17 @@
 'use client'
 
 /**
- * SignalCard
+ * SignalCard — Redesigned with futuristic dark UI
  *
  * Displays the hedge recommendation produced by the engine.
  * Shows: allocation breakdown, index scores, rationale, and Execute button.
- *
- * TODO: ExecutionPanel integration in Phase 1 implementation.
  */
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import type { HedgeSignal } from '@/lib/types'
 import ExecutionPanel from './ExecutionPanel'
+import GoldButton from './ui/GoldButton'
 
 interface Props {
   signal: HedgeSignal
@@ -19,52 +19,115 @@ interface Props {
 
 export default function SignalCard({ signal }: Props) {
   const [executing, setExecuting] = useState(false)
+  const [showFullRationale, setShowFullRationale] = useState(false)
+
+  // Calculate overall signal strength (0-100)
+  const topScore = signal.indexScores[0]?.overallScore || 75
 
   return (
-    <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="glass border border-border rounded-2xl overflow-hidden shadow-2xl"
+    >
+      {/* Gold top border */}
+      <div className="h-[2px] bg-gradient-to-r from-transparent via-gold-500 to-transparent" />
 
       {/* Header */}
-      <div className="px-5 py-4 border-b border-gray-100">
-        <div className="flex items-center justify-between">
+      <div className="bg-surface-1 px-6 pt-5 pb-4 border-b border-border/50">
+        <div className="flex items-start justify-between">
           <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Hedge signal</p>
-            <p className="text-lg font-semibold text-gray-900 mt-0.5">
-              ${signal.amountUsd.toLocaleString(undefined, { maximumFractionDigits: 2 })} USD
+            <p className="font-urbanist text-xs font-semibold text-gold-400 uppercase tracking-[0.15em] mb-2">
+              HEDGE SIGNAL
             </p>
-            <p className="text-xs text-gray-400">
-              from {signal.amountUsd.toLocaleString()} {signal.currency} · {signal.riskLevel} risk
+            <p className="font-space-grotesk text-3xl text-white font-bold mb-1">
+              ${signal.amountUsd.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+            </p>
+            <p className="font-urbanist text-sm text-text-secondary">
+              {signal.amountUsd.toLocaleString()} {signal.currency} · {signal.riskLevel} risk
             </p>
           </div>
-          <span className="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-full">
-            {signal.allocations.length} {signal.allocations.length === 1 ? 'index' : 'indices'}
-          </span>
+
+          {/* Circular gauge showing signal strength */}
+          <div className="relative w-20 h-20">
+            <svg className="w-full h-full -rotate-90">
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                stroke="var(--color-surface-3)"
+                strokeWidth="6"
+                fill="none"
+              />
+              <circle
+                cx="40"
+                cy="40"
+                r="32"
+                stroke="var(--color-gold-500)"
+                strokeWidth="6"
+                fill="none"
+                strokeDasharray={`${(topScore / 100) * 201} 201`}
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="font-space-grotesk text-sm text-gold-400 font-bold">
+                {topScore}
+              </span>
+              <span className="font-urbanist text-[9px] text-text-tertiary uppercase">Score</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Allocations */}
-      <div className="px-5 py-4 space-y-3">
-        {signal.allocations.map((alloc) => (
-          <div key={alloc.indexId} className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-800">{alloc.indexName}</p>
-              <p className="text-xs text-gray-400">{alloc.indexSymbol}</p>
+      <div className="px-6 py-5">
+        <p className="font-urbanist text-xs font-semibold text-gold-400 uppercase tracking-[0.15em] mb-4">
+          ALLOCATION
+        </p>
+        <div className="space-y-4">
+          {signal.allocations.map((alloc, index) => (
+            <div key={alloc.indexId} className="pb-4 border-b border-border/50 last:border-0">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="font-urbanist font-medium text-text-primary text-sm">
+                    {alloc.indexName}
+                  </p>
+                  <p className="font-space-grotesk text-xs text-text-tertiary">
+                    {alloc.indexSymbol}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="font-space-grotesk font-bold text-lg text-white">
+                    {Math.round(alloc.weight * 100)}%
+                  </p>
+                  <p className="font-space-grotesk text-xs text-text-tertiary">
+                    ${alloc.amountUsd.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+
+              {/* Animated progress bar */}
+              <div className="h-[3px] bg-surface-3 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${alloc.weight * 100}%` }}
+                  transition={{ duration: 1, delay: index * 0.1, ease: 'easeOut' }}
+                  className="h-full bg-gradient-to-r from-gold-500 to-signal-up rounded-full"
+                />
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm font-semibold text-gray-900">
-                {Math.round(alloc.weight * 100)}%
-              </p>
-              <p className="text-xs text-gray-400">
-                ${alloc.amountUsd.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Score breakdown (top index) */}
       {signal.indexScores.length > 0 && (
-        <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
-          <p className="text-xs font-medium text-gray-500 mb-2">Top index score breakdown</p>
+        <div className="px-6 py-5 bg-surface-1/50 border-t border-border/50">
+          <p className="font-urbanist text-xs font-semibold text-gold-400 uppercase tracking-[0.15em] mb-4">
+            WHY THIS INDEX
+          </p>
           {(['inflationCorrelation', 'riskAdjustedReturn', 'liquidityScore'] as const).map((dim) => {
             const top = signal.indexScores[0]
             const labels = {
@@ -72,16 +135,27 @@ export default function SignalCard({ signal }: Props) {
               riskAdjustedReturn: 'Risk-adjusted return',
               liquidityScore: 'Liquidity',
             }
+            const colors = {
+              inflationCorrelation: 'bg-gold-500',
+              riskAdjustedReturn: 'bg-signal-up',
+              liquidityScore: 'bg-data-400',
+            }
             return (
-              <div key={dim} className="flex items-center gap-2 mb-1.5">
-                <span className="text-xs text-gray-400 w-36">{labels[dim]}</span>
-                <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-blue-500 rounded-full"
-                    style={{ width: `${top[dim]}%` }}
+              <div key={dim} className="flex items-center gap-3 mb-3 last:mb-0">
+                <span className="font-urbanist text-xs text-text-tertiary w-32">
+                  {labels[dim]}
+                </span>
+                <div className="flex-1 h-[3px] bg-surface-3 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${top[dim]}%` }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    className={`h-full ${colors[dim]} rounded-full`}
                   />
                 </div>
-                <span className="text-xs text-gray-500 w-8 text-right">{top[dim]}</span>
+                <span className="font-space-grotesk text-xs text-text-secondary w-10 text-right">
+                  {top[dim]}
+                </span>
               </div>
             )
           })}
@@ -89,32 +163,64 @@ export default function SignalCard({ signal }: Props) {
       )}
 
       {/* Rationale */}
-      <div className="px-5 py-4 border-t border-gray-100">
-        <p className="text-xs font-medium text-gray-500 mb-1">
-          Why this allocation
-          {signal.rationaleIsAiGenerated && (
-            <span className="ml-2 text-purple-500">· AI-generated</span>
+      <div className="px-6 py-5 border-t border-border/50">
+        <div className="flex items-center gap-2 mb-3">
+          <p className="font-urbanist text-xs font-semibold text-gold-400 uppercase tracking-[0.15em]">
+            SIGNAL RATIONALE
+          </p>
+          {signal.rationaleIsAiGenerated ? (
+            <span className="bg-purple-900/40 border border-purple-700/50 text-purple-300 font-space-grotesk text-xs px-2 py-0.5 rounded">
+              ✦ AI
+            </span>
+          ) : (
+            <span className="bg-surface-2 border border-border text-text-tertiary font-space-grotesk text-xs px-2 py-0.5 rounded">
+              AUTO
+            </span>
           )}
-        </p>
-        <p className="text-sm text-gray-700 leading-relaxed">{signal.rationale}</p>
+        </div>
+        
+        <motion.div
+          animate={{ height: showFullRationale ? 'auto' : '60px' }}
+          className="overflow-hidden relative"
+        >
+          <p className="font-urbanist text-sm text-text-secondary leading-relaxed">
+            {signal.rationale}
+          </p>
+          {!showFullRationale && signal.rationale.length > 150 && (
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-surface-1 to-transparent" />
+          )}
+        </motion.div>
+        
+        {signal.rationale.length > 150 && (
+          <button
+            onClick={() => setShowFullRationale(!showFullRationale)}
+            className="font-urbanist text-xs text-gold-400 hover:text-gold-300 mt-2 transition-colors"
+          >
+            {showFullRationale ? 'Show less' : 'Show more'}
+          </button>
+        )}
       </div>
 
       {/* Execute */}
-      <div className="px-5 py-4 border-t border-gray-100">
+      <div className="px-6 py-5 border-t border-border/50">
         {executing ? (
           <ExecutionPanel signal={signal} onDone={() => setExecuting(false)} />
         ) : (
-          <button
-            onClick={() => setExecuting(true)}
-            className="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors"
-          >
-            Execute on SoDEX testnet
-          </button>
+          <>
+            <GoldButton
+              onClick={() => setExecuting(true)}
+              size="lg"
+              className="w-full"
+            >
+              Execute on SoDEX
+              <span className="ml-2">→</span>
+            </GoldButton>
+            <p className="text-center font-urbanist text-xs text-text-tertiary mt-3">
+              Testnet only — no real funds are moved
+            </p>
+          </>
         )}
-        <p className="text-center text-xs text-gray-400 mt-2">
-          Testnet only — no real funds are moved
-        </p>
       </div>
-    </div>
+    </motion.div>
   )
 }

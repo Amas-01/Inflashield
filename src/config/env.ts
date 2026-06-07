@@ -41,11 +41,19 @@ const EnvSchema = z.object({
   // Node environment (for framework checks)
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
-  // Phase 2: Database configuration (optional in Phase 1, required in Phase 2)
-  DATABASE_URL: z.string().url().optional(), // PostgreSQL connection string
+  // Phase 2: Database configuration (required for user persistence)
+  // For Supabase: use the transaction pooler URL with pgbouncer=true
+  // Example: postgresql://user:password@project.pooler.supabase.com:6543/postgres?pgbouncer=true
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required (see SUPABASE_SETUP.md)').optional(),
+  
+  // Direct URL for migrations (used during db:push)
+  // For Supabase: use the direct URL without pgbouncer
+  // Example: postgresql://user:password@project.pooler.supabase.com:5432/postgres
+  DIRECT_URL: z.string().optional(),
+  
   // A separate connection string for audit log writes (restricted role with INSERT-only)
   // This role must NOT have UPDATE or DELETE permissions on the audit schema
-  DATABASE_AUDIT_URL: z.string().url().optional(),
+  DATABASE_AUDIT_URL: z.string().optional(),
 
   // Phase 2.4: Telegram notifications (optional)
   TELEGRAM_BOT_TOKEN: z.string().optional(),

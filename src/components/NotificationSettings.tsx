@@ -181,7 +181,7 @@ export function NotificationSettings() {
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-sm text-blue-900">
           <strong>💡 Tip:</strong> Enable Telegram notifications to stay informed about your hedge portfolio
-          activity. You'll receive updates on rebalancing events and important alerts.
+          activity. You&apos;ll receive updates on rebalancing events and important alerts.
         </p>
       </div>
     </div>

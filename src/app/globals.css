@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base */
+  --color-void: #04090F;
+  --color-deep: #080F1C;
+  --color-surface-1: #0D1829;
+  --color-surface-2: #121F34;
+  --color-surface-3: #1A2B47;
+  --color-border: #1E2D47;
+  --color-border-glow: #2A4070;
+
+  /* Gold — the shield accent */
+  --color-gold-500: #F5C842;
+  --color-gold-400: #F8D668;
+  --color-gold-300: #FBE499;
+  --color-gold-glow: rgba(245, 200, 66, 0.15);
+
+  /* Signal colors */
+  --color-signal-up: #10B981;
+  --color-signal-glow: rgba(16, 185, 129, 0.12);
+  --color-signal-down: #EF4444;
+  --color-signal-warn: #F59E0B;
+
+  /* Text hierarchy */
+  --text-primary: #E8EDF5;
+  --text-secondary: #8BA0BF;
+  --text-tertiary: #4A6080;
+  --text-ghost: #2A3D57;
+
+  /* Data blue */
+  --color-data-400: #60A5FA;
+  --color-data-500: #3B82F6;
+  --color-data-glow: rgba(59, 130, 246, 0.10);
+}
+
+body {
+  background-color: var(--color-deep);
+  color: var(--text-primary);
+  font-family: var(--font-urbanist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-glow);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-500);
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(245, 200, 66, 0.2);
+  color: var(--color-gold-400);
+}
+
+/* Glass effects */
+@layer utilities {
+  .glass {
+    background: rgba(13, 24, 41, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(30, 45, 71, 0.8);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .glass:hover {
+    border-color: var(--color-border-glow);
+  }
+
+  .glass-gold {
+    background: rgba(13, 24, 41, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(245, 200, 66, 0.2);
+    box-shadow: 0 0 40px rgba(245, 200, 66, 0.05) inset;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .glass-gold:hover {
+    box-shadow: 0 0 40px rgba(245, 200, 66, 0.08);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(245, 200, 66, 0.15),
+                0 0 60px rgba(245, 200, 66, 0.05);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.15),
+                0 0 60px rgba(16, 185, 129, 0.05);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #F5C842 0%, #FBE499 50%, #D4941A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-white {
+    background: linear-gradient(135deg, #FFFFFF 0%, #8BA0BF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .noise {
+    position: relative;
+  }
+
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .scanline {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.01) 2px,
+      rgba(255,255,255,0.01) 4px
+    );
+  }
+}
+
+/* Custom cursor on desktop only */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  
+  a, button {
+    cursor: none;
+  }
+}
+
+/* Hide custom cursor on touch devices */
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}

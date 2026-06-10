@@ -42,13 +42,13 @@ const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
   // Phase 2: Database configuration (required for user persistence)
-  // For Supabase: use the transaction pooler URL with pgbouncer=true
-  // Example: postgresql://user:password@project.pooler.supabase.com:6543/postgres?pgbouncer=true
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required (see SUPABASE_SETUP.md)').optional(),
+  // Local development: postgresql://postgres:postgres@localhost:5432/inflashield
+  // Production (Vercel): Auto-configured when you add Vercel Postgres
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required').optional(),
   
   // Direct URL for migrations (used during db:push)
-  // For Supabase: use the direct URL without pgbouncer
-  // Example: postgresql://user:password@project.pooler.supabase.com:5432/postgres
+  // For local development: same as DATABASE_URL
+  // Production: usually same as DATABASE_URL
   DIRECT_URL: z.string().optional(),
   
   // A separate connection string for audit log writes (restricted role with INSERT-only)

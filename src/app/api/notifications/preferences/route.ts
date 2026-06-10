@@ -92,6 +92,8 @@ export async function PATCH(request: NextRequest) {
     await writeAudit({
       userId,
       sessionId: null,
+      ipAddress: '0.0.0.0', // Server-side operation
+      userAgent: 'server',
       action: 'notifications.preferences_updated',
       resourceType: 'notification_preferences',
       outcome: 'success',
@@ -119,6 +121,8 @@ export async function PATCH(request: NextRequest) {
     await writeAudit({
       userId: 'system',
       sessionId: null,
+      ipAddress: '0.0.0.0',
+      userAgent: 'server',
       action: 'notifications.preferences_error',
       resourceType: 'notification_preferences',
       outcome: 'failure',

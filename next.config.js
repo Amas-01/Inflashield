@@ -17,6 +17,11 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+
+  // Runtime configuration - use Node.js runtime for API routes that use database
+  experimental: {
+    runtime: 'nodejs',
+  },
 }
 
 module.exports = nextConfig

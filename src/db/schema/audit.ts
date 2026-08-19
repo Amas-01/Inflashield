@@ -20,7 +20,7 @@ export const auditSchema = pgSchema('audit')
 export const auditLog = auditSchema.table('audit_log', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: varchar('user_id', { length: 255 }).notNull(), // Not a FK — survive user deletion
-  sessionId: varchar('session_id', { length: 255 }).notNull(),
+  sessionId: varchar('session_id', { length: 255 }), // Nullable for system operations
   ipAddress: varchar('ip_address', { length: 45 }).notNull(),
   userAgent: varchar('user_agent', { length: 200 }).notNull(),
   action: varchar('action', { length: 100 }).notNull(), // e.g. 'hedge_signal.create'

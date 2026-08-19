@@ -94,7 +94,7 @@ export async function PATCH(request: NextRequest) {
     // Audit log
     await writeAudit({
       user_id: userId,
-      session_id: null,
+      session_id: null, // Server-side operation
       ip_address: '0.0.0.0', // Server-side operation
       user_agent: 'server',
       action: 'notifications.preferences_updated',

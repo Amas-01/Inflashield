@@ -18,8 +18,10 @@ import { env } from '@/config/env'
 export interface AuditRecord {
   /** UUID — never reused */
   id: string
-  /** Session identifier (ephemeral in Phase 1, user ID in Phase 2+) */
-  session_id: string
+  /** User ID (not a FK - survives user deletion) */
+  user_id: string
+  /** Session identifier (ephemeral in Phase 1, user ID in Phase 2+) - nullable for system operations */
+  session_id: string | null
   /** Client IP address or 'server-side' for internal calls */
   ip_address: string
   /** The action performed, e.g. 'hedge_signal.create' */
@@ -97,7 +99,7 @@ export async function writeAudit(
     try {
       await repo.write({
         id: auditRecord.id,
-        userId: auditRecord.session_id, // In Phase 2, session_id will be user_id
+        userId: auditRecord.user_id,
         sessionId: auditRecord.session_id,
         ipAddress: auditRecord.ip_address,
         userAgent: auditRecord.user_agent,

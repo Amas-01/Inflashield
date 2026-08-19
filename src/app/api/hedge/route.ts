@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
   // 2. Check permissions
   if (!can('guest', 'create', 'hedge_signal')) {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'hedge_signal.create',

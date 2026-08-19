@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
+        user_id: 'system',
         session_id: 'system',
         ip_address: getClientIp(request),
         user_agent: getUserAgent(request),
@@ -57,6 +58,7 @@ export async function POST(request: NextRequest) {
 
       if (result?.error) {
         await writeAudit({
+          user_id: 'system',
           session_id: 'system',
           ip_address: getClientIp(request),
           user_agent: getUserAgent(request),
@@ -78,6 +80,7 @@ export async function POST(request: NextRequest) {
 
       // signIn succeeded - redirect will be set via NextAuth session
       await writeAudit({
+        user_id: 'system',
         session_id: 'system',
         ip_address: getClientIp(request),
         user_agent: getUserAgent(request),
@@ -109,6 +112,7 @@ export async function POST(request: NextRequest) {
     console.error('Login error:', error)
 
     await writeAudit({
+      user_id: 'system',
       session_id: 'system',
       ip_address: getClientIp(request),
       user_agent: getUserAgent(request),

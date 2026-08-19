@@ -11,6 +11,9 @@ import { auth } from '@/auth'
 import { WalletRepository } from '@/db/repositories/WalletRepository'
 import { writeAudit } from '@/lib/audit/logger'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 const disconnectSchema = z.object({
   walletId: z.string().uuid('Invalid wallet ID'),
 })

@@ -12,6 +12,9 @@ import { auth } from '@/auth'
 import { WalletRepository } from '@/db/repositories/WalletRepository'
 import { writeAudit } from '@/lib/audit/logger'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 const connectSchema = z.object({
   address: z.string().regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid Ethereum address'),
   chainId: z.number().int().positive('Invalid chain ID'),

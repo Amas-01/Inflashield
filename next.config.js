@@ -1,12 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Optimize font loading
-  optimizeFonts: true,
-  
-  // Webpack config to ignore pg-native warning
+  // Webpack config to ignore pg-native warning and improve compatibility
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals.push('pg-native')
+      // Exclude problematic Node.js modules from Edge Runtime
+      config.externals.push('pg-native', 'bcryptjs')
     }
     return config
   },
@@ -16,11 +14,6 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '2mb',
     },
-  },
-
-  // Runtime configuration - use Node.js runtime for API routes that use database
-  experimental: {
-    runtime: 'nodejs',
   },
 }
 

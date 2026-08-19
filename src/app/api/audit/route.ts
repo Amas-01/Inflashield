@@ -9,6 +9,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { AuditRepository } from '@/db/repositories/AuditRepository'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await auth()

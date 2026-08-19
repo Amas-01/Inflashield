@@ -87,7 +87,8 @@ function loadEnv(): Env {
       'Please check your .env.local file (see docs/SETUP.md for instructions).\n',
     )
 
-    process.exit(1)
+    // Throw error instead of process.exit for Edge Runtime compatibility
+    throw new Error(`Environment validation failed:\n${errors}`)
   }
 
   // Warn if required API keys are placeholder values

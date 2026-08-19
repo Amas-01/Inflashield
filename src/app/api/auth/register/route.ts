@@ -9,6 +9,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import bcryptjs from 'bcryptjs'
+
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
 import { UserRepository } from '@/db/repositories/UserRepository'
 import { writeAudit } from '@/lib/audit/logger'
 import { getClientIp, getUserAgent } from '@/lib/audit/helpers'

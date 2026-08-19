@@ -8,6 +8,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { WalletRepository } from '@/db/repositories/WalletRepository'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 export async function GET(request: NextRequest) {
   try {
     // Get authenticated session

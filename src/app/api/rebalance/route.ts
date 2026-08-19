@@ -10,6 +10,9 @@ import { auth } from '@/auth'
 import { rebalanceAgent } from '@/lib/engine/rebalanceAgent'
 import { writeAudit } from '@/lib/audit/logger'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()

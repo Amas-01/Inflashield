@@ -32,6 +32,9 @@ import { scoreIndices, buildHedgeSignal, buildTemplateRationale } from '@/lib/en
 import { PERFORMANCE_WINDOW } from '@/config/constants'
 import type { HedgeSignal } from '@/lib/types'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 // ---------------------------------------------------------------------------
 // AI enrichment (optional)
 // ---------------------------------------------------------------------------

@@ -9,6 +9,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { signIn } from '@/auth'
 import { writeAudit } from '@/lib/audit/logger'
+
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
 import { getClientIp, getUserAgent } from '@/lib/audit/helpers'
 
 const loginSchema = z.object({

@@ -12,6 +12,9 @@ import { NotificationPreferencesRepository } from '@/db/repositories/Notificatio
 import { telegramService } from '@/lib/notifications/telegram'
 import { writeAudit } from '@/lib/audit/logger'
 
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
+
 const updateSchema = z.object({
   telegramChatId: z.string().optional(),
   notifyOnRebalance: z.boolean().optional(),
@@ -90,12 +93,12 @@ export async function PATCH(request: NextRequest) {
 
     // Audit log
     await writeAudit({
-      userId,
-      sessionId: null,
-      ipAddress: '0.0.0.0', // Server-side operation
-      userAgent: 'server',
+      user_id: userId,
+      session_id: null,
+      ip_address: '0.0.0.0', // Server-side operation
+      user_agent: 'server',
       action: 'notifications.preferences_updated',
-      resourceType: 'notification_preferences',
+      resource_type: 'notification_preferences',
       outcome: 'success',
       metadata: {
         hasTelegram: !!telegramChatId,
@@ -119,12 +122,12 @@ export async function PATCH(request: NextRequest) {
     console.error('Update preferences error:', error)
 
     await writeAudit({
-      userId: 'system',
-      sessionId: null,
-      ipAddress: '0.0.0.0',
-      userAgent: 'server',
+      user_id: 'system',
+      session_id: null,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'notifications.preferences_error',
-      resourceType: 'notification_preferences',
+      resource_type: 'notification_preferences',
       outcome: 'failure',
       metadata: {
         error: error instanceof Error ? error.message : 'Unknown error',

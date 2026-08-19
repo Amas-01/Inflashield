@@ -19,6 +19,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/config/env'
 import { extractSession } from '@/lib/session/extractSession'
 import { can } from '@/config/permissions'
+
+// Force Node.js runtime to avoid Edge Runtime compatibility issues
+export const runtime = 'nodejs'
 import { sanitiseAmount, sanitiseIndexId } from '@/lib/security/sanitise'
 import { writeAudit } from '@/lib/audit/logger'
 import { executeHedgeSignal } from '@/lib/api/sodex'

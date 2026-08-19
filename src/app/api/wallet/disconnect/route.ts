@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
 
     if (!success) {
       await writeAudit({
+      user_id: 'guest',
         userId,
         sessionId: null,
         action: 'wallet.disconnect_not_found',
@@ -67,6 +68,7 @@ export async function POST(request: NextRequest) {
 
     // Audit log
     await writeAudit({
+      user_id: 'guest',
       userId,
       sessionId: null,
       action: 'wallet.disconnect_success',
@@ -86,6 +88,7 @@ export async function POST(request: NextRequest) {
     console.error('Wallet disconnect error:', error)
 
     await writeAudit({
+      user_id: 'guest',
       userId: 'system',
       sessionId: null,
       action: 'wallet.disconnect_error',

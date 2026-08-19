@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
     const results = await rebalanceAgent.rebalanceUser(userId)
 
     await writeAudit({
+      user_id: 'guest',
       userId,
       sessionId: null,
       action: 'rebalance.triggered_manual',
@@ -54,6 +55,7 @@ export async function POST(request: NextRequest) {
     console.error('Rebalance error:', error)
 
     await writeAudit({
+      user_id: 'guest',
       userId: 'system',
       sessionId: null,
       action: 'rebalance.error',

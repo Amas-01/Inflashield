@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
+      user_id: 'guest',
         userId,
         sessionId: null,
         action: 'wallet.connect_invalid',
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
 
     // Audit log
     await writeAudit({
+      user_id: 'guest',
       userId,
       sessionId: null,
       action: 'wallet.connect_success',
@@ -100,6 +102,7 @@ export async function POST(request: NextRequest) {
     console.error('Wallet connect error:', error)
 
     await writeAudit({
+      user_id: 'guest',
       userId: 'system',
       sessionId: null,
       action: 'wallet.connect_error',

@@ -101,6 +101,7 @@ async function sosoFetch<T>(
       // Don't retry on auth errors
       if (response.status === 401) {
         writeAudit({
+      user_id: 'guest',
           session_id: session,
           ip_address: 'server-side',
           action: 'sosovalue.fetch',
@@ -124,6 +125,7 @@ async function sosoFetch<T>(
 
       if (response.status === 404) {
         writeAudit({
+      user_id: 'guest',
           session_id: session,
           ip_address: 'server-side',
           action: 'sosovalue.fetch',
@@ -159,6 +161,7 @@ async function sosoFetch<T>(
 
       if (!response.ok) {
         writeAudit({
+      user_id: 'guest',
           session_id: session,
           ip_address: 'server-side',
           action: 'sosovalue.fetch',
@@ -186,6 +189,7 @@ async function sosoFetch<T>(
         json = await response.json()
       } catch (parseErr) {
         writeAudit({
+      user_id: 'guest',
           session_id: session,
           ip_address: 'server-side',
           action: 'sosovalue.fetch',
@@ -210,6 +214,7 @@ async function sosoFetch<T>(
       const parsed = schema.safeParse(json)
       if (!parsed.success) {
         writeAudit({
+      user_id: 'guest',
           session_id: session,
           ip_address: 'server-side',
           action: 'sosovalue.fetch',
@@ -233,6 +238,7 @@ async function sosoFetch<T>(
 
       // Success — write audit and return
       writeAudit({
+      user_id: 'guest',
         session_id: session,
         ip_address: 'server-side',
         action: 'sosovalue.fetch',
@@ -391,6 +397,7 @@ export async function fetchIndexPerformanceBatch(
 
   // Audit the batch operation
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'sosovalue.fetch_batch',

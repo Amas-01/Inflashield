@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
     body = await request.json()
   } catch {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'hedge_signal.create',
@@ -114,6 +115,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     const message = err.message || 'Validation failed'
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'hedge_signal.create',
@@ -131,6 +133,7 @@ export async function POST(request: NextRequest) {
 
   // 5. Write audit record for the request
   writeAudit({
+      user_id: 'guest',
     session_id: session.sessionId,
     ip_address: session.ip,
     action: 'hedge_signal.create',
@@ -197,6 +200,7 @@ export async function POST(request: NextRequest) {
     console.error('[/api/hedge] error:', err.message)
 
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'hedge_signal.create',

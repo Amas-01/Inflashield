@@ -225,6 +225,7 @@ export async function fetchPairRate(
     sanitiseCurrency(to)
   } catch (err: any) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.fetch',
@@ -241,6 +242,7 @@ export async function fetchPairRate(
   if (from === to) {
     const rate: SpotRate = { base: from, target: to, rate: 1, fetchedAt: Date.now() }
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.fetch',
@@ -257,6 +259,7 @@ export async function fetchPairRate(
   const cached = getCached(from, to)
   if (cached) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.cache_hit',
@@ -277,6 +280,7 @@ export async function fetchPairRate(
     rate = await fetchFromExchangeRateApi(from, to)
     setCache(rate, 'primary')
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.fetch',
@@ -297,6 +301,7 @@ export async function fetchPairRate(
     rate = await fetchFromFrankfurter(from, to)
     setCache(rate, 'fallback')
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.fetch',
@@ -315,6 +320,7 @@ export async function fetchPairRate(
   } catch (err: any) {
     // Both failed — log failure and re-throw fallback error
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'rate.fetch',

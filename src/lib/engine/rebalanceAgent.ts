@@ -96,6 +96,7 @@ export class RebalanceAgent {
       // Log audit trail
       if (results.length > 0) {
         await writeAudit({
+      user_id: 'guest',
           userId,
           sessionId: null,
           action: 'rebalance.completed',
@@ -113,6 +114,7 @@ export class RebalanceAgent {
       console.error('RebalanceAgent.rebalanceUser error:', error)
 
       await writeAudit({
+      user_id: 'guest',
         userId,
         sessionId: null,
         action: 'rebalance.error',

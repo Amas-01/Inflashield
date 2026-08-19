@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
+      user_id: 'system',
         session_id: 'system',
         ip_address: getClientIp(request),
         user_agent: getUserAgent(request),
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       await writeAudit({
+      user_id: 'system',
         session_id: 'system',
         ip_address: getClientIp(request),
         user_agent: getUserAgent(request),
@@ -99,6 +101,7 @@ export async function POST(request: NextRequest) {
 
     // Audit log success
     await writeAudit({
+      user_id: 'guest',
       session_id: newUser.id,
       ip_address: getClientIp(request),
       user_agent: getUserAgent(request),
@@ -126,6 +129,7 @@ export async function POST(request: NextRequest) {
     console.error('Registration error:', error)
 
     await writeAudit({
+      user_id: 'system',
       session_id: 'system',
       ip_address: getClientIp(request),
       user_agent: getUserAgent(request),

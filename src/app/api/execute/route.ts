@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
   // 2. Check permissions
   if (!can('guest', 'execute', 'order')) {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_blocked',
@@ -52,6 +53,7 @@ export async function POST(request: NextRequest) {
   // 3. Testnet guard — BEFORE any network calls
   if (env.SODEX_ENV !== 'testnet') {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_blocked',
@@ -76,6 +78,7 @@ export async function POST(request: NextRequest) {
     body = await request.json()
   } catch {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_attempt',
@@ -96,6 +99,7 @@ export async function POST(request: NextRequest) {
     !Array.isArray((body as any).signal?.allocations)
   ) {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_attempt',
@@ -128,6 +132,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (err: any) {
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_attempt',
@@ -150,6 +155,7 @@ export async function POST(request: NextRequest) {
     // 8. Log the result
     if (orders.length === 0) {
       writeAudit({
+      user_id: 'guest',
         session_id: session.sessionId,
         ip_address: session.ip,
         action: 'order.execute_result',
@@ -173,6 +179,7 @@ export async function POST(request: NextRequest) {
     }
 
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_result',
@@ -205,6 +212,7 @@ export async function POST(request: NextRequest) {
     console.error('[/api/execute] error:', err.message)
 
     writeAudit({
+      user_id: 'guest',
       session_id: session.sessionId,
       ip_address: session.ip,
       action: 'order.execute_error',

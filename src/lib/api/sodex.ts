@@ -77,6 +77,7 @@ async function sodexFetch<T>(
   // Handle error cases
   if (response.status === 401) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.api_error',
@@ -98,6 +99,7 @@ async function sodexFetch<T>(
 
   if (response.status === 403) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.api_error',
@@ -121,6 +123,7 @@ async function sodexFetch<T>(
 
   if (response.status === 429) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.api_error',
@@ -142,6 +145,7 @@ async function sodexFetch<T>(
 
   if (response.status === 503) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.api_error',
@@ -163,6 +167,7 @@ async function sodexFetch<T>(
 
   if (!response.ok) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.api_error',
@@ -228,6 +233,7 @@ export async function submitOrder(
   // TESTNET GUARD — checked BEFORE any network request
   if (env.SODEX_ENV !== 'testnet') {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.submit_blocked',
@@ -256,6 +262,7 @@ export async function submitOrder(
     }
   } catch (err: any) {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.submit_attempt',
@@ -277,6 +284,7 @@ export async function submitOrder(
     err.code = 'EXECUTION_FAILED'
     err.retryable = false
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.submit_attempt',
@@ -303,6 +311,7 @@ export async function submitOrder(
 
   // Write audit BEFORE submitting
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'order.submit_attempt',
@@ -329,6 +338,7 @@ export async function submitOrder(
 
   // Write audit AFTER successful submission
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'order.submit_result',
@@ -369,6 +379,7 @@ export async function pollOrderStatus(
   const deadline = Date.now() + ORDER_POLL_TIMEOUT_MS
 
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'order.poll_start',
@@ -389,6 +400,7 @@ export async function pollOrderStatus(
 
     if (['filled', 'rejected', 'cancelled'].includes(data.status)) {
       writeAudit({
+      user_id: 'guest',
         session_id: session,
         ip_address: 'server-side',
         action: 'order.poll_complete',
@@ -415,6 +427,7 @@ export async function pollOrderStatus(
 
   // Timeout — return a pending result
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'order.poll_timeout',
@@ -459,6 +472,7 @@ export async function executeHedgeSignal(
   // TESTNET GUARD
   if (env.SODEX_ENV !== 'testnet') {
     writeAudit({
+      user_id: 'guest',
       session_id: session,
       ip_address: 'server-side',
       action: 'order.batch_blocked',
@@ -527,6 +541,7 @@ export async function executeHedgeSignal(
 
   // Audit the batch operation
   writeAudit({
+      user_id: 'guest',
     session_id: session,
     ip_address: 'server-side',
     action: 'order.batch_submit',

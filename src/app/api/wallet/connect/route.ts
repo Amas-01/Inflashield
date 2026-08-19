@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
-      user_id: 'guest',
+      resource_id: null,user_id: 'guest',
         userId,
         sessionId: null,
         action: 'wallet.connect_invalid',
@@ -45,8 +45,7 @@ export async function POST(request: NextRequest) {
         outcome: 'failure',
         metadata: {
           error: validated.error.message,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',
-        },
+          ip: request.headers.get('x-forwarded-for') || 'unknown',},
       })
 
       return NextResponse.json(
@@ -71,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     // Audit log
     await writeAudit({
-      user_id: 'guest',
+      resource_id: null,user_id: 'guest',
       userId,
       sessionId: null,
       action: 'wallet.connect_success',
@@ -81,8 +80,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         address,
         chainId,
-        ip: request.headers.get('x-forwarded-for') || 'unknown',
-      },
+        ip: request.headers.get('x-forwarded-for') || 'unknown',},
     })
 
     return NextResponse.json(
@@ -102,15 +100,14 @@ export async function POST(request: NextRequest) {
     console.error('Wallet connect error:', error)
 
     await writeAudit({
-      user_id: 'guest',
+      resource_id: null,user_id: 'guest',
       userId: 'system',
       sessionId: null,
       action: 'wallet.connect_error',
       resourceType: 'wallet',
       outcome: 'failure',
       metadata: {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
+        error: error instanceof Error ? error.message : 'Unknown error',},
     })
 
     return NextResponse.json(

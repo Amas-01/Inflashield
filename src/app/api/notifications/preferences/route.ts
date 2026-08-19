@@ -93,7 +93,7 @@ export async function PATCH(request: NextRequest) {
 
     // Audit log
     await writeAudit({
-      user_id: userId,
+      resource_id: null,user_id: userId,
       session_id: null, // Server-side operation
       ip_address: '0.0.0.0', // Server-side operation
       user_agent: 'server',
@@ -103,8 +103,7 @@ export async function PATCH(request: NextRequest) {
       metadata: {
         hasTelegram: !!telegramChatId,
         notifyOnRebalance,
-        threshold: notifyThresholdPct,
-      },
+        threshold: notifyThresholdPct,},
     })
 
     return NextResponse.json(
@@ -122,7 +121,7 @@ export async function PATCH(request: NextRequest) {
     console.error('Update preferences error:', error)
 
     await writeAudit({
-      user_id: 'system',
+      resource_id: null,user_id: 'system',
       session_id: null,
       ip_address: '0.0.0.0',
       user_agent: 'server',
@@ -130,8 +129,7 @@ export async function PATCH(request: NextRequest) {
       resource_type: 'notification_preferences',
       outcome: 'failure',
       metadata: {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
+        error: error instanceof Error ? error.message : 'Unknown error',},
     })
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

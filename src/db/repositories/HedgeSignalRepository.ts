@@ -118,14 +118,14 @@ export class HedgeSignalRepository {
    */
   private dbToDomain(record: DBHedgeSignal): HedgeSignal {
     return {
-      id: record.id,
       currency: record.currency,
-      amount: parseFloat(record.amountUsd),
       amountUsd: parseFloat(record.amountUsd),
       riskLevel: record.riskLevel as 'conservative' | 'balanced' | 'aggressive',
       allocations: (record.signalJson as any)?.allocations || [],
+      indexScores: (record.signalJson as any)?.indexScores || [],
       rationale: (record.signalJson as any)?.rationale || '',
-      createdAt: record.createdAt?.toISOString() || new Date().toISOString(),
+      rationaleIsAiGenerated: (record.signalJson as any)?.rationaleIsAiGenerated || false,
+      generatedAt: record.createdAt?.toISOString() || new Date().toISOString(),
     }
   }
 }

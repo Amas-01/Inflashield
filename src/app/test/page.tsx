@@ -2,6 +2,8 @@
  * Test page - Simple version to diagnose issues
  */
 
+'use client'
+
 export default function TestPage() {
   return (
     <div className="min-h-screen bg-deep flex items-center justify-center p-8">

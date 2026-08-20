@@ -16,9 +16,13 @@ export class NotificationPreferencesRepository {
     try {
       const db = await getDb()
 
-      let result = await db.query.notificationPreferences.findFirst({
-        where: eq(notificationPreferences.userId, this.userId),
-      })
+      const results = await db
+        .select()
+        .from(notificationPreferences)
+        .where(eq(notificationPreferences.userId, this.userId))
+        .limit(1)
+
+      let result = results[0] || null
 
       // Create default preferences if not found
       if (!result) {

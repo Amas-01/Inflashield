@@ -32,12 +32,18 @@ const chains = process.env.NODE_ENV === 'production' ? productionChains : [...pr
 // Wagmi config
 // ─────────────────────────────────────────────────────────────────────────────
 
-const connectors = connectorsForWallets([
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Popular',
+      wallets: [metaMaskWallet, rainbowWallet, walletConnectWallet],
+    },
+  ],
   {
-    groupName: 'Popular',
-    wallets: [metaMaskWallet, rainbowWallet, walletConnectWallet],
-  },
-])
+    appName: 'InflaShield',
+    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'inflashield-demo',
+  }
+)
 
 const config = createConfig({
   connectors,
@@ -78,8 +84,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
           modalSize="compact"
           appInfo={{
             appName: 'InflaShield',
-            appDescription: 'Protect your purchasing power against inflation',
-            appUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+            learnMoreUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
           }}
         >
           {children}

@@ -37,14 +37,20 @@ export class WalletRepository {
       const db = await getDb()
 
       // Check if wallet already exists for this user + chain
-      const existing = await db.query.wallets.findFirst({
-        where: and(
-          eq(wallets.userId, this.userId),
-          eq(wallets.address, normalizedAddress),
-          eq(wallets.chainId, data.chainId)
-        ),
-      })
+      const existingResults = await db
+        .select()
+        .from(wallets)
+        .where(
+          and(
+            eq(wallets.userId, this.userId),
+            eq(wallets.address, normalizedAddress),
+            eq(wallets.chainId, data.chainId)
+          )
+        )
+        .limit(1)
 
+      const existing = existingResults[0]
+      
       if (existing) {
         return existing
       }
@@ -74,14 +80,18 @@ export class WalletRepository {
 
     try {
       const db = await getDb()
-      const result = await db.query.wallets.findFirst({
-        where: and(
-          eq(wallets.userId, this.userId),
-          eq(wallets.address, normalizedAddress)
-        ),
-      })
+      const results = await db
+        .select()
+        .from(wallets)
+        .where(
+          and(
+            eq(wallets.userId, this.userId),
+            eq(wallets.address, normalizedAddress)
+          )
+        )
+        .limit(1)
 
-      return result ?? null
+      return results[0] ?? null
     } catch (error) {
       console.error('WalletRepository.findByAddress error:', error)
       return null
@@ -91,11 +101,12 @@ export class WalletRepository {
   async findAll(): Promise<Wallet[]> {
     try {
       const db = await getDb()
-      const result = await db.query.wallets.findMany({
-        where: eq(wallets.userId, this.userId),
-      })
+      const results = await db
+        .select()
+        .from(wallets)
+        .where(eq(wallets.userId, this.userId))
 
-      return result ?? []
+      return results ?? []
     } catch (error) {
       console.error('WalletRepository.findAll error:', error)
       return []
@@ -105,14 +116,18 @@ export class WalletRepository {
   async findByChainId(chainId: number): Promise<Wallet | null> {
     try {
       const db = await getDb()
-      const result = await db.query.wallets.findFirst({
-        where: and(
-          eq(wallets.userId, this.userId),
-          eq(wallets.chainId, chainId)
-        ),
-      })
+      const results = await db
+        .select()
+        .from(wallets)
+        .where(
+          and(
+            eq(wallets.userId, this.userId),
+            eq(wallets.chainId, chainId)
+          )
+        )
+        .limit(1)
 
-      return result ?? null
+      return results[0] ?? null
     } catch (error) {
       console.error('WalletRepository.findByChainId error:', error)
       return null
@@ -128,10 +143,14 @@ export class WalletRepository {
       const db = await getDb()
 
       // Ensure wallet belongs to this user before deleting
-      const wallet = await db.query.wallets.findFirst({
-        where: and(eq(wallets.id, id), eq(wallets.userId, this.userId)),
-      })
+      const walletResults = await db
+        .select()
+        .from(wallets)
+        .where(and(eq(wallets.id, id), eq(wallets.userId, this.userId)))
+        .limit(1)
 
+      const wallet = walletResults[0]
+      
       if (!wallet) {
         return false
       }

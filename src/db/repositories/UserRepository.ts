@@ -18,10 +18,12 @@ export class UserRepository {
 
     try {
       const db = await getDb()
-      const result = await db.query.users.findFirst({
-        where: eq(users.id, id),
-      })
-      return result ?? null
+      const results = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, id))
+        .limit(1)
+      return results[0] ?? null
     } catch (error) {
       console.error('UserRepository.findById error:', error)
       return null
@@ -35,10 +37,12 @@ export class UserRepository {
 
     try {
       const db = await getDb()
-      const result = await db.query.users.findFirst({
-        where: eq(users.email, email),
-      })
-      return result ?? null
+      const results = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1)
+      return results[0] ?? null
     } catch (error) {
       console.error('UserRepository.findByEmail error:', error)
       return null

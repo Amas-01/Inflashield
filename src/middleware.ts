@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
     )
     requestHeaders.set(
       'x-user-role',
-      (session.user.role as string) || 'user'
+      ((session.user as any).role as string) || 'user'
     )
 
     return NextResponse.next({

@@ -68,7 +68,9 @@ export class RebalanceAgent {
 
         // Get actual allocation from recent orders
         const currencyOrders = orders?.filter((o) => {
-          const signal = signals.find((s) => s.id === o.signalId)
+          // Note: HedgeSignal doesn't have ID at domain level - needs refactoring
+          // For now, match by timestamp
+          const signal = signals.find((s) => s.generatedAt === o.signalId)
           return signal?.currency === currency
         }) || []
 

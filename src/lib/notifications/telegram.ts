@@ -19,7 +19,7 @@ class TelegramService {
 
   constructor() {
     try {
-      this.botToken = getEnv().TELEGRAM_BOT_TOKEN
+      this.botToken = getEnv().TELEGRAM_BOT_TOKEN || null
     } catch {
       console.warn('TELEGRAM_BOT_TOKEN not configured — Telegram notifications disabled')
     }

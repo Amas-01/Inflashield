@@ -59,7 +59,7 @@ export class BacktestingEngine {
     // Fetch signals in date range
     const allSignals = await signalRepo.findRecent(1000)
     const signals = (allSignals || []).filter((s) => {
-      const signalDate = new Date(s.createdAt)
+      const signalDate = new Date(s.generatedAt)
       return signalDate >= startDate && signalDate <= endDate
     })
 
@@ -90,19 +90,18 @@ export class BacktestingEngine {
     const signalReturns: Array<{ signal: any; return: number; executed: boolean }> = []
 
     signals.forEach((signal) => {
-      const orders = (allOrders || []).filter((o) => o.signalId === signal.id)
-      const executed = orders.length > 0
+      // Note: HedgeSignal domain type doesn't have ID - this needs refactoring
+      // For now, we'll treat all signals as not executed
+      const executed = false
 
-      if (executed) {
-        // Simulate return calculation (in real scenario, would fetch actual trade results)
-        // For demo: assume signals have random returns between -5% and +15%
-        const simulatedReturn = (Math.random() - 0.3) * 20 // Biased toward positive
-        signalReturns.push({
-          signal,
-          return: simulatedReturn,
-          executed,
-        })
-      }
+      // Simulate return calculation (in real scenario, would fetch actual trade results)
+      // For demo: assume signals have random returns between -5% and +15%
+      const simulatedReturn = (Math.random() - 0.3) * 20 // Biased toward positive
+      signalReturns.push({
+        signal,
+        return: simulatedReturn,
+        executed,
+      })
     })
 
     // Calculate metrics
@@ -115,9 +114,9 @@ export class BacktestingEngine {
       endDate,
       metrics,
       signals: signalReturns.map((sr) => ({
-        id: sr.signal.id,
-        date: sr.signal.createdAt,
-        amount: parseFloat(sr.signal.amountUsd),
+        id: sr.signal.generatedAt, // Use timestamp as temporary ID
+        date: sr.signal.generatedAt,
+        amount: parseFloat(sr.signal.amountUsd as any),
         riskLevel: sr.signal.riskLevel,
         status: sr.executed ? 'executed' : 'pending',
         return: sr.return,

@@ -96,15 +96,18 @@ export class RebalanceAgent {
       // Log audit trail
       if (results.length > 0) {
         await writeAudit({
-      resource_id: null,user_id: 'guest',
-          userId,
-          sessionId: null,
+          user_id: userId,
+          session_id: null,
+          resource_id: null,
+          ip_address: '0.0.0.0',
+          user_agent: 'server',
           action: 'rebalance.completed',
-          resourceType: 'portfolio',
+          resource_type: 'portfolio',
           outcome: 'success',
           metadata: {
             rebalancedCurrencies: results.map((r) => r.currency),
-            totalDrift: results.reduce((sum, r) => sum + r.drift, 0) / results.length,},
+            totalDrift: results.reduce((sum, r) => sum + r.drift, 0) / results.length,
+          },
         })
       }
 
@@ -113,14 +116,17 @@ export class RebalanceAgent {
       console.error('RebalanceAgent.rebalanceUser error:', error)
 
       await writeAudit({
-      resource_id: null,user_id: 'guest',
-        userId,
-        sessionId: null,
+        user_id: userId,
+        session_id: null,
+        resource_id: null,
+        ip_address: '0.0.0.0',
+        user_agent: 'server',
         action: 'rebalance.error',
-        resourceType: 'portfolio',
+        resource_type: 'portfolio',
         outcome: 'failure',
         metadata: {
-          error: error instanceof Error ? error.message : 'Unknown error',},
+          error: error instanceof Error ? error.message : 'Unknown error',
+        },
       })
 
       return results

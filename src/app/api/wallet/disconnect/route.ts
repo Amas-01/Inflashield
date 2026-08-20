@@ -47,16 +47,18 @@ export async function POST(request: NextRequest) {
 
     if (!success) {
       await writeAudit({
-      resource_id: null,user_id: 'guest',
-        userId,
-        sessionId: null,
+        user_id: userId,
+        session_id: null,
+        resource_id: walletId,
+        ip_address: '0.0.0.0',
+        user_agent: 'server',
         action: 'wallet.disconnect_not_found',
-        resourceType: 'wallet',
-        resourceId: walletId,
+        resource_type: 'wallet',
         outcome: 'failure',
         metadata: {
           reason: 'Wallet does not belong to user',
-          ip: request.headers.get('x-forwarded-for') || 'unknown',},
+          ip: request.headers.get('x-forwarded-for') || 'unknown',
+        },
       })
 
       return NextResponse.json(
@@ -67,15 +69,17 @@ export async function POST(request: NextRequest) {
 
     // Audit log
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId,
-      sessionId: null,
+      user_id: userId,
+      session_id: null,
+      resource_id: walletId,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'wallet.disconnect_success',
-      resourceType: 'wallet',
-      resourceId: walletId,
+      resource_type: 'wallet',
       outcome: 'success',
       metadata: {
-        ip: request.headers.get('x-forwarded-for') || 'unknown',},
+        ip: request.headers.get('x-forwarded-for') || 'unknown',
+      },
     })
 
     return NextResponse.json(
@@ -86,14 +90,17 @@ export async function POST(request: NextRequest) {
     console.error('Wallet disconnect error:', error)
 
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId: 'system',
-      sessionId: null,
+      user_id: 'system',
+      session_id: null,
+      resource_id: null,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'wallet.disconnect_error',
-      resourceType: 'wallet',
+      resource_type: 'wallet',
       outcome: 'failure',
       metadata: {
-        error: error instanceof Error ? error.message : 'Unknown error',},
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
     })
 
     return NextResponse.json(

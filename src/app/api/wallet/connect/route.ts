@@ -37,15 +37,18 @@ export async function POST(request: NextRequest) {
 
     if (!validated.success) {
       await writeAudit({
-      resource_id: null,user_id: 'guest',
-        userId,
-        sessionId: null,
+        user_id: userId,
+        session_id: null,
+        resource_id: null,
+        ip_address: '0.0.0.0',
+        user_agent: 'server',
         action: 'wallet.connect_invalid',
-        resourceType: 'wallet',
+        resource_type: 'wallet',
         outcome: 'failure',
         metadata: {
           error: validated.error.message,
-          ip: request.headers.get('x-forwarded-for') || 'unknown',},
+          ip: request.headers.get('x-forwarded-for') || 'unknown',
+        },
       })
 
       return NextResponse.json(
@@ -70,17 +73,19 @@ export async function POST(request: NextRequest) {
 
     // Audit log
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId,
-      sessionId: null,
+      user_id: userId,
+      session_id: null,
+      resource_id: wallet.id,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'wallet.connect_success',
-      resourceType: 'wallet',
-      resourceId: wallet.id,
+      resource_type: 'wallet',
       outcome: 'success',
       metadata: {
         address,
         chainId,
-        ip: request.headers.get('x-forwarded-for') || 'unknown',},
+        ip: request.headers.get('x-forwarded-for') || 'unknown',
+      },
     })
 
     return NextResponse.json(
@@ -100,14 +105,17 @@ export async function POST(request: NextRequest) {
     console.error('Wallet connect error:', error)
 
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId: 'system',
-      sessionId: null,
+      user_id: 'system',
+      session_id: null,
+      resource_id: null,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'wallet.connect_error',
-      resourceType: 'wallet',
+      resource_type: 'wallet',
       outcome: 'failure',
       metadata: {
-        error: error instanceof Error ? error.message : 'Unknown error',},
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
     })
 
     return NextResponse.json(

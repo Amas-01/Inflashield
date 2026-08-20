@@ -75,6 +75,5 @@ export default {
   ],
   pages: {
     signIn: '/login',
-    signUp: '/register',
   },
 } satisfies NextAuthConfig

@@ -22,7 +22,7 @@ export default function SignalCard({ signal }: Props) {
   const [showFullRationale, setShowFullRationale] = useState(false)
 
   // Calculate overall signal strength (0-100)
-  const topScore = signal.indexScores[0]?.overallScore || 75
+  const topScore = signal.indexScores[0]?.score || 75
 
   return (
     <motion.div

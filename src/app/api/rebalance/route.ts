@@ -26,15 +26,18 @@ export async function POST(request: NextRequest) {
     const results = await rebalanceAgent.rebalanceUser(userId)
 
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId,
-      sessionId: null,
+      user_id: userId,
+      session_id: null,
+      resource_id: null,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'rebalance.triggered_manual',
-      resourceType: 'portfolio',
+      resource_type: 'portfolio',
       outcome: 'success',
       metadata: {
         rebalancedCount: results.filter((r) => r.executed).length,
-        currenciesRebalanced: results.map((r) => r.currency),},
+        currenciesRebalanced: results.map((r) => r.currency),
+      },
     })
 
     return NextResponse.json(
@@ -54,14 +57,17 @@ export async function POST(request: NextRequest) {
     console.error('Rebalance error:', error)
 
     await writeAudit({
-      resource_id: null,user_id: 'guest',
-      userId: 'system',
-      sessionId: null,
+      user_id: 'system',
+      session_id: null,
+      resource_id: null,
+      ip_address: '0.0.0.0',
+      user_agent: 'server',
       action: 'rebalance.error',
-      resourceType: 'portfolio',
+      resource_type: 'portfolio',
       outcome: 'failure',
       metadata: {
-        error: error instanceof Error ? error.message : 'Unknown error',},
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
     })
 
     return NextResponse.json({ error: 'Rebalance failed' }, { status: 500 })
